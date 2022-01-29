@@ -16,7 +16,10 @@ export function isDependencyListDeclarationCorrect(depsList: DependencyList) {
  * @param depsListNew
  * @returns
  */
-export function isDependencyListDeclarationEqualsCorrect(depsListOriginal: DependencyList, depsListNew: DependencyList) {
+export function isDependencyListDeclarationEqualsCorrect(
+  depsListOriginal: DependencyList,
+  depsListNew: DependencyList,
+) {
   if (depsListOriginal && !depsListNew) return false;
   if (!depsListOriginal && depsListNew) return false;
   if (!depsListOriginal && !depsListNew) return true;
@@ -30,8 +33,13 @@ export function isDependencyListDeclarationEqualsCorrect(depsListOriginal: Depen
  * @param currentDepsList
  * @returns
  */
-export function isDependencyListUpdated(prevDepsList: DependencyList, currentDepsList: DependencyList, hookName?: string) {
-  if (!isDependencyListDeclarationEqualsCorrect(prevDepsList, currentDepsList)) throw DependencyListDeclarationIsNotEqualsCorrect(hookName);
+export function isDependencyListUpdated(
+  prevDepsList: DependencyList,
+  currentDepsList: DependencyList,
+  hookName?: string,
+) {
+  if (!isDependencyListDeclarationEqualsCorrect(prevDepsList, currentDepsList))
+    throw DependencyListDeclarationIsNotEqualsCorrect(hookName);
 
   if (!prevDepsList) return true;
   return (prevDepsList || []).some((item, index) => !Object.is(item, currentDepsList[index]));

@@ -1,6 +1,6 @@
 {
   "name": "@berish/bicker-js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "NodeJS module management system with style like React",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
@@ -14,7 +14,7 @@
     "watch": "tsc -w -p .",
     "start": "node build/test.js",
     "build": "tsc -p .",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",

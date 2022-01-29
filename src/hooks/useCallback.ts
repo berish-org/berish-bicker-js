@@ -8,7 +8,8 @@ export interface UseCallbackHook<T> {
 }
 
 export function useCallback<T extends (...args: any[]) => any>(callback: T, depsList: DependencyList): T {
-  if (!depsList || !isDependencyListDeclarationCorrect(depsList)) throw DependencyListDeclarationIsNotCorrect('useCallback');
+  if (!depsList || !isDependencyListDeclarationCorrect(depsList))
+    throw DependencyListDeclarationIsNotCorrect('useCallback');
 
   const owner = useOwner();
   const hook = owner.modules.hook.use<UseCallbackHook<T>>('useCallback', () => ({ depsList, callback }));
