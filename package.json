@@ -1,0 +1,37 @@
+{
+  "name": "@berish/bicker-js",
+  "version": "0.1.0",
+  "description": "NodeJS module management system with style like React",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "repository": "git@github.com:berish-org/berish-bicker-js.git",
+  "author": "Berishev Ravil <quadraticteam@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "test": "jest --config jestconfig.json",
+    "test:dev": "jest --config jestconfig.json --watch --verbose=false",
+    "build": "tsc -p .",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "files": [
+    "build/**/*"
+  ],
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "jest": "^27.4.7",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.3",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.5.0"
+  },
+  "dependencies": {
+  }
+}
