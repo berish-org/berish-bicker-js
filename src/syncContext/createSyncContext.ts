@@ -11,7 +11,7 @@ export function createSyncContext<T>(value: T): SyncContext<T> {
   };
 
   const runWith = <Result>(runValue: T, callback: () => Result): Result => {
-    let prevParent = value;
+    const prevParent = value;
 
     value = runValue;
     const callbackResult = callback();

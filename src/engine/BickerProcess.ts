@@ -52,6 +52,7 @@ export class BickerProcess {
     }
 
     if (this._processAction(processActions, 'render')) {
+      // AFTER RENDER ACTION
     }
   }
 
