@@ -11,9 +11,8 @@
   "scripts": {
     "test": "jest --config jestconfig.json",
     "test:dev": "jest --config jestconfig.json --watch --verbose=false",
-    "watch": "tsc -w -p .",
-    "start": "node build/test.js",
-    "build": "tsc -p .",
+    "build": "rm -rf ./build/ && tsc -p tsconfig.json",
+    "watch": "rm -rf ./build/ && tsc -p tsconfig.json -w",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
