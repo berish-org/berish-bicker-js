@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "target": "es6",
+    "lib": ["es6", "dom"],
+    "moduleResolution": "node",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": false,
+    "experimentalDecorators": true,
+
+    "jsx": "react",
+    "noErrorTruncation": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false
+  },
+  "compileOnSave": true
+}

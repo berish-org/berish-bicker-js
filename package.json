@@ -11,6 +11,8 @@
   "scripts": {
     "test": "jest --config jestconfig.json",
     "test:dev": "jest --config jestconfig.json --watch --verbose=false",
+    "watch": "tsc -w -p .",
+    "start": "node build/test.js",
     "build": "tsc -p .",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
@@ -25,6 +27,8 @@
   ],
   "devDependencies": {
     "@types/jest": "^27.4.0",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/lodash.defer": "^4.1.6",
     "jest": "^27.4.7",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",

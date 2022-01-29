@@ -1,19 +1,12 @@
 {
+  "extends": "./tsconfig.default.json",
   "compilerOptions": {
-    "outDir": "./build",
-    "target": "es6",
-    "module": "commonjs",
-    "lib": ["es6", "dom"],
+    "rootDir": "src",
+    "outDir": "build",
     "declaration": true,
-    "sourceMap": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": false,
-    "noImplicitReturns": true,
-    "noImplicitThis": false,
-    "noImplicitAny": false
+    "declarationMap": true,
+    "sourceMap": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "**/__tests__/*"]
+  "include": ["./src", "index.ts", "index.tsx"],
+  "exclude": ["node_modules", "**/*.test.ts", "./build"]
 }
