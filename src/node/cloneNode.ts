@@ -1,4 +1,5 @@
-import { BickerNode, CreateNodeProps } from './createNode';
+import { CreateNodeProps } from '../component';
+import { BickerNode } from './createNode';
 
 export function cloneNode<Props>(node: BickerNode, componentProps: CreateNodeProps<Props>): BickerNode {
   const { key, ...props } = componentProps;

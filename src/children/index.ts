@@ -1,5 +1,6 @@
+import { BickerElement } from '../component';
 import { NotValidBickerElement } from '../errors';
-import { BickerElement, BickerNode, isValidNode } from '../node';
+import { BickerNode, isValidNode } from '../node';
 
 export function childrenToArray(children: BickerElement): BickerNode[] {
   const array = Array.isArray(children) ? children : [children || null];

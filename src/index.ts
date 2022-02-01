@@ -1,4 +1,5 @@
 export * from './children';
+export * from './component';
 export * from './context';
 export * from './engine';
 export * from './hooks';

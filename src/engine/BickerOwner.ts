@@ -1,7 +1,7 @@
-import debounce from 'lodash.debounce';
-import { BickerElement, BickerNode } from '../node';
-import { currentBickerOwnerSyncContext, currentComponentContextSyncContext } from '../syncContext';
-import { BickerOwnerInSyncContextNotFound, HookWrongCall } from '../errors';
+import { BickerNode } from '../node';
+import { BickerElement } from '../component';
+import { currentBickerOwnerSyncContext } from '../syncContext';
+import { BickerOwnerInSyncContextNotFound } from '../errors';
 import { childrenToArray } from '../children';
 
 import { reconciliation } from './reconciliation';
@@ -9,7 +9,6 @@ import { isPropsUpdated } from './isPropsUpdated';
 import { BickerProcess } from './BickerProcess';
 import { BickerHook } from './BickerHook';
 import { BickerContext } from './BickerContext';
-import defer from 'lodash.defer';
 
 export class BickerOwner {
   static getOwnerFromSyncContex(): BickerOwner {
@@ -36,7 +35,7 @@ export class BickerOwner {
 
   private _parentOwner: BickerOwner = null;
 
-  private _entity: BickerNode = null;
+  private _node: BickerNode = null;
   private _prevNodes: BickerNode[] = [];
   private _prevProps: Record<any, any> = {};
 
@@ -44,8 +43,8 @@ export class BickerOwner {
   private _context: BickerContext = null;
   private _process: BickerProcess = null;
 
-  private constructor(entity: BickerNode, parentOwner: BickerOwner) {
-    this._entity = entity;
+  private constructor(node: BickerNode, parentOwner: BickerOwner) {
+    this._node = node;
     this._parentOwner = parentOwner;
 
     this._hook = new BickerHook();
@@ -75,17 +74,17 @@ export class BickerOwner {
     return this._parentOwner;
   }
 
-  get entity() {
-    return this._entity;
+  get node() {
+    return this._node;
   }
 
   // Получение карты нод
   getChildrenNodes() {
     let childrenElement: BickerElement = null;
     currentBickerOwnerSyncContext.runWith(this, () => {
-      childrenElement = this._entity.type(this._entity.props);
+      childrenElement = this._node.type(this._node.props);
     });
-    this._prevProps = this._entity.props;
+    this._prevProps = this._node.props;
 
     if (!this._hook.hookInitialized) this._hook.setInitialized();
     else this._hook.resetCallIndex();
@@ -95,12 +94,12 @@ export class BickerOwner {
   }
 
   private _linkNewNode(node: BickerNode) {
-    this._entity = node;
+    this._node = node;
     node.owner = this;
   }
 
   isNeedToUpdate() {
-    return isPropsUpdated(this._prevProps, this._entity.props);
+    return isPropsUpdated(this._prevProps, this._node.props);
   }
 
   mount() {
