@@ -12,3 +12,5 @@ export const HookWrongCall = (hookName?: string) =>
 export const NotValidBickerElement = () => Error('Wrong BickerElement: some items is not valid BickerNode');
 
 export const BickerOwnerInSyncContextNotFound = () => Error('BickerOwner not found in sync context');
+
+export const BickerComponentNotSupportHooks = () => Error('BickerComponen is not support hooks');

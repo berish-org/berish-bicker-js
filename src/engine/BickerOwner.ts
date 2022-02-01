@@ -1,53 +1,28 @@
+import { BickerComponentNotSupportHooks } from '../errors';
+import { BickerComponentType } from '../component';
 import { BickerNode } from '../node';
-import { BickerElement } from '../component';
-import { currentBickerOwnerSyncContext } from '../syncContext';
-import { BickerOwnerInSyncContextNotFound } from '../errors';
-import { childrenToArray } from '../children';
+import { BickerContext, BickerHook, BickerProcess } from './modules';
 
-import { reconciliation } from './reconciliation';
-import { isPropsUpdated } from './isPropsUpdated';
-import { BickerProcess } from './BickerProcess';
-import { BickerHook } from './BickerHook';
-import { BickerContext } from './BickerContext';
+export abstract class BickerOwner<NodeType extends BickerComponentType<any>> {
+  protected _node: BickerNode<NodeType> = null;
+  protected _parentOwner: BickerOwner<BickerComponentType<any>> = null;
+  protected _process: BickerProcess = null;
+  protected _context: BickerContext = null;
+  protected _hook: BickerHook = null;
 
-export class BickerOwner {
-  static getOwnerFromSyncContex(): BickerOwner {
-    const value = currentBickerOwnerSyncContext.getValue();
-    if (!value) throw BickerOwnerInSyncContextNotFound();
+  protected _prevNodes: BickerNode[] = [];
 
-    return value;
-  }
+  protected _isInitialized = false;
 
-  static createOwnerFromNode(node: BickerNode, parentOwner: BickerOwner): BickerOwner {
-    node.owner = new BickerOwner(node, parentOwner);
-    return BickerOwner.getOwnerFromNode(node);
-  }
+  protected abstract _mountProcess(): void;
+  protected abstract _renderProcess(): void;
+  protected abstract _unmountProcess(): void;
+  protected abstract _getChildrenNodes(): BickerNode[];
+  protected abstract _isNeedToUpdate(): boolean;
 
-  static updateOwnerNode(prevNode: BickerNode, newNode: BickerNode): BickerOwner {
-    const owner = BickerOwner.getOwnerFromNode(prevNode);
-    owner._linkNewNode(newNode);
-    return owner;
-  }
-
-  static getOwnerFromNode(node: BickerNode): BickerOwner {
-    return node.owner;
-  }
-
-  private _parentOwner: BickerOwner = null;
-
-  private _node: BickerNode = null;
-  private _prevNodes: BickerNode[] = [];
-  private _prevProps: Record<any, any> = {};
-
-  private _hook: BickerHook = null;
-  private _context: BickerContext = null;
-  private _process: BickerProcess = null;
-
-  private constructor(node: BickerNode, parentOwner: BickerOwner) {
+  constructor(node: BickerNode<NodeType>, parentOwner: BickerOwner<BickerComponentType<any>>) {
     this._node = node;
     this._parentOwner = parentOwner;
-
-    this._hook = new BickerHook();
     this._context = new BickerContext(parentOwner && parentOwner._context);
     this._process = new BickerProcess([
       ['mount', this._mountProcess.bind(this)],
@@ -55,19 +30,10 @@ export class BickerOwner {
       ['unmount', this._unmountProcess.bind(this)],
     ]);
 
-    this.unmount = this.unmount.bind(this);
-    this.getChildrenNodes = this.getChildrenNodes.bind(this);
+    this.mount = this.mount.bind(this);
     this.render = this.render.bind(this);
-    // this.forceRender = this.forceRender.bind(this);
-    // this.debounceForceRender = debounce(this.forceRender, 0).bind(this);
-  }
-
-  get modules() {
-    return {
-      hook: this._hook,
-      context: this._context,
-      process: this._process,
-    };
+    this.unmount = this.unmount.bind(this);
+    this.linkNewNode = this.linkNewNode.bind(this);
   }
 
   get parentOwner() {
@@ -78,81 +44,35 @@ export class BickerOwner {
     return this._node;
   }
 
-  // Получение карты нод
-  getChildrenNodes() {
-    let childrenElement: BickerElement = null;
-    currentBickerOwnerSyncContext.runWith(this, () => {
-      childrenElement = this._node.type(this._node.props);
-    });
-    this._prevProps = this._node.props;
-
-    if (!this._hook.hookInitialized) this._hook.setInitialized();
-    else this._hook.resetCallIndex();
-
-    const childrenNodes = childrenToArray(childrenElement);
-    return childrenNodes;
+  get hook() {
+    if (!this._hook) throw BickerComponentNotSupportHooks();
+    return this._hook;
   }
 
-  private _linkNewNode(node: BickerNode) {
-    this._node = node;
-    node.owner = this;
+  get context() {
+    return this._context;
   }
 
-  isNeedToUpdate() {
-    return isPropsUpdated(this._prevProps, this._node.props);
+  get process() {
+    return this._process;
   }
 
-  mount() {
+  public mount() {
     this._process.emit('mount');
   }
 
-  render(force?: boolean) {
-    // Проверка, надо ли вообще обновлять компонент, были ли изменения
-    if (force || this.isNeedToUpdate()) {
+  public render(force?: boolean) {
+    if (force || this._isNeedToUpdate()) {
       this._process.emit('render');
     }
   }
 
-  // Уничтожение текущей ноды
-  unmount() {
+  public unmount() {
     this._process.emit('unmount');
   }
-  private _mountProcess() {
-    if (!this._hook.hookInitialized) {
-      this._renderProcess();
-    }
-  }
 
-  private _renderProcess() {
-    const newNodes = this.getChildrenNodes();
-    const mutations = reconciliation(this._prevNodes, newNodes);
-    this._prevNodes = newNodes;
-
-    mutations.forEach((mutation) => {
-      switch (mutation.type) {
-        case 'mount': {
-          const owner = BickerOwner.createOwnerFromNode(mutation.newNode, this);
-          owner.mount();
-          break;
-        }
-        case 'update': {
-          const owner = BickerOwner.updateOwnerNode(mutation.prevNode, mutation.newNode);
-          owner.render();
-          break;
-        }
-        case 'unmount': {
-          const owner = BickerOwner.getOwnerFromNode(mutation.prevNode);
-          owner.unmount();
-          break;
-        }
-
-        default:
-          break;
-      }
-    });
-  }
-
-  private _unmountProcess() {
-    this._prevNodes.forEach((node) => BickerOwner.getOwnerFromNode(node).unmount());
+  public linkNewNode(node: BickerNode<NodeType>) {
+    this._node = node;
+    node.owner = this;
   }
 }

@@ -1,4 +1,4 @@
-import { HookWrongCall } from '../errors';
+import { HookWrongCall } from '../../errors';
 
 export interface Hook<T> {
   hookType: string;
@@ -8,14 +8,14 @@ export interface Hook<T> {
 export class BickerHook {
   private _hooks: Hook<any>[] = [];
   private _hookCallIndex: number = 0;
-  private _hookInitialized = false;
+  private _isInitialized: () => boolean = () => false;
 
-  get hookInitialized() {
-    return this._hookInitialized;
+  constructor(isInitialized: () => boolean) {
+    this._isInitialized = isInitialized;
   }
 
-  setInitialized() {
-    this._hookInitialized = true;
+  get hookInitialized() {
+    return this._isInitialized();
   }
 
   resetCallIndex() {
@@ -24,7 +24,7 @@ export class BickerHook {
 
   use<T>(hookType: string, createHook: () => T): T {
     // Хуки еще не проиниализированы
-    if (!this._hookInitialized) {
+    if (!this.hookInitialized) {
       const hookData = createHook();
       this._hooks.push({ hookType, hookData });
       return hookData;

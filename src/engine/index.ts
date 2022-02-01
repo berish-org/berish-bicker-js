@@ -1,1 +1,1 @@
-export * from './BickerOwner';
+export * from './bickerOwner';

@@ -11,7 +11,7 @@ export function useMemo<T>(callback: () => T, depsList?: DependencyList): T {
   if (!isDependencyListDeclarationCorrect(depsList)) throw DependencyListDeclarationIsNotCorrect('useMemo');
 
   const owner = useOwner();
-  const hook = owner.modules.hook.use<UseMemoHook<T>>('useMemo', () => ({ depsList, value: callback() }));
+  const hook = owner.hook.use<UseMemoHook<T>>('useMemo', () => ({ depsList, value: callback() }));
 
   if (isDependencyListUpdated(hook.depsList, depsList, 'useMemo')) {
     hook.depsList = depsList;

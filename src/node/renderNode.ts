@@ -1,8 +1,8 @@
 import { BickerNode } from '../node';
-import { BickerOwner } from '../engine';
+import { createOwnerFromNode, getOwnerFromNode } from '../engine/methods';
 
 export function renderNode(node: BickerNode) {
-  const owner = BickerOwner.getOwnerFromNode(node) || BickerOwner.createOwnerFromNode(node, null);
+  const owner = getOwnerFromNode(node) || createOwnerFromNode(node, null);
   owner.mount();
   return () => owner.unmount();
 }

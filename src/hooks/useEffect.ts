@@ -12,15 +12,15 @@ export function useEffect(callback: () => void | (() => void), depsList?: Depend
   if (!isDependencyListDeclarationCorrect(depsList)) throw DependencyListDeclarationIsNotCorrect('useEffect');
 
   const owner = useOwner();
-  const hook = owner.modules.hook.use<UseEffectHook>('useEffect', () => {
+  const hook = owner.hook.use<UseEffectHook>('useEffect', () => {
     // first mounting
 
-    owner.modules.process.on('mount', () => {
+    owner.process.on('mount', () => {
       const prevUnmount = callback();
       hook.prevUnmount = prevUnmount;
     });
 
-    owner.modules.process.on('unmount', () => {
+    owner.process.on('unmount', () => {
       if (hook.prevUnmount) {
         hook.prevUnmount();
         hook.prevUnmount = null;

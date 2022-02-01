@@ -1,11 +1,11 @@
+import defer from 'lodash.defer';
 import { Context } from '../context';
 import { BickerOwner } from '../engine';
 import { useEffect } from './useEffect';
 import { useOwner } from './useOwner';
 import { useRef } from './useRef';
-import { useForceUpdate } from './useForceUpdate';
 import { useMemo } from './useMemo';
-import defer from 'lodash.defer';
+import { BickerFunctionComponent } from '../component';
 
 export function useContext<T>(context: Context<T>): T {
   const owner = useOwner();
@@ -24,8 +24,8 @@ export function useContext<T>(context: Context<T>): T {
   return storeRef.current;
 }
 
-function getContext<T>(owner: BickerOwner, context: Context<T>): Context<T> {
-  const nodeContext = owner.modules.context.getInheritStore();
+function getContext<T>(owner: BickerOwner<BickerFunctionComponent<any>>, context: Context<T>): Context<T> {
+  const nodeContext = owner.context.getInheritStore();
   if (context.id in nodeContext) return nodeContext[context.id];
   return context;
 }

@@ -1,7 +1,5 @@
 import defer from 'lodash.defer';
 import debounce from 'lodash.debounce';
-import { BickerOwner } from './BickerOwner';
-import { reconciliation } from './reconciliation';
 
 type Action = 'mount' | 'render' | 'unmount';
 type Callback = () => void;

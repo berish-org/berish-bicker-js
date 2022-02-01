@@ -12,7 +12,7 @@ export function useCallback<T extends (...args: any[]) => any>(callback: T, deps
     throw DependencyListDeclarationIsNotCorrect('useCallback');
 
   const owner = useOwner();
-  const hook = owner.modules.hook.use<UseCallbackHook<T>>('useCallback', () => ({ depsList, callback }));
+  const hook = owner.hook.use<UseCallbackHook<T>>('useCallback', () => ({ depsList, callback }));
 
   if (isDependencyListUpdated(hook.depsList, depsList, 'useCallback')) {
     hook.depsList = depsList;

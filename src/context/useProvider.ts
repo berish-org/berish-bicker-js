@@ -7,9 +7,9 @@ export function useProvider<T>(context: Context<T>, value: T) {
   const subContext = useMemo<Context<T>>(() => ({ ...context, ...createSubscriptionManager() }), []);
 
   useEffect(() => {
-    owner.modules.context.currentStore[context.id] = subContext;
+    owner.context.currentStore[context.id] = subContext;
     return () => {
-      delete owner.modules.context.currentStore[context.id];
+      delete owner.context.currentStore[context.id];
     };
   }, [owner, subContext]);
 

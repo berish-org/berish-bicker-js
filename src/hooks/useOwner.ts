@@ -1,5 +1,5 @@
-import { BickerOwner } from '../engine';
+import { BickerOwnerFunction } from '../engine/bickerOwnerFunction';
 
 export function useOwner() {
-  return BickerOwner.getOwnerFromSyncContex();
+  return BickerOwnerFunction.getOwnerFromSyncContex();
 }

@@ -1,5 +1,4 @@
-import { BickerNode } from '../node';
-import { isPropsUpdated } from './isPropsUpdated';
+import { BickerNode } from '../../node';
 
 export interface MutationMountAction {
   type: 'mount';
@@ -50,8 +49,4 @@ function getMutationNode(list: BickerNode[], currentNode: BickerNode): MutationA
     // Нода не найдена, тогда мутация на создание
     return { type: 'mount', newNode: currentNode };
   }
-}
-
-function isNeedToUpdateProps(node1: BickerNode, node2: BickerNode) {
-  return isPropsUpdated(node1.props, node2.props);
 }
