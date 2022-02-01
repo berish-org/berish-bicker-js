@@ -8,3 +8,4 @@ export * from './usePrevious';
 export * from './useRef';
 export * from './useRefCallback';
 export * from './useState';
+export * from './useStore';

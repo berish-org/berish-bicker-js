@@ -4,6 +4,7 @@ export * from './context';
 export * from './engine';
 export * from './hooks';
 export * from './node';
+export * from './store';
 export * from './syncContext';
 export * from './const';
 export * from './errors';
