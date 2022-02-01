@@ -33,10 +33,18 @@ export class BickerComponent<Props, State> {
     this[SYMBOL_COMPONENT_STATE] = value;
   }
 
-  componentDidMount(): any {}
-  componentWillUnmount(): any {}
-  componentDidUpdate(prevProps: Props, prevState: State): any {}
-  render(): BickerElement {}
+  componentDidMount(): any {
+    // EMPTY
+  }
+  componentWillUnmount(): any {
+    // EMPTY
+  }
+  componentDidUpdate(prevProps: Props, prevState: State): any {
+    // EMPTY
+  }
+  render(): BickerElement {
+    // EMPTY
+  }
 
   setState(state: Partial<State>) {
     Object.assign(this[SYMBOL_COMPONENT_STATE], state);
