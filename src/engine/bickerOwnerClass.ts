@@ -62,7 +62,8 @@ export class BickerOwnerClass extends BickerOwner<BickerClassComponent<any>> {
       }
     });
 
-    if (this._component.componentDidUpdate) this._component.componentDidUpdate(_prevProps, _prevState);
+    if (this._isInitialized && this._component.componentDidUpdate)
+      this._component.componentDidUpdate(_prevProps, _prevState);
   }
 
   protected _unmountProcess(): void {
