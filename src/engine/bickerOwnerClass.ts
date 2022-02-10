@@ -9,7 +9,7 @@ import { isObjectUpdated, reconciliation } from './modules';
 export class BickerOwnerClass extends BickerOwner<BickerClassComponent<any>> {
   protected _component: BickerComponent<any, any> = null;
 
-  protected _prevProps: Record<any, any> = {};
+  protected _prevProps: Record<any, any> = null;
   protected _prevState: Record<any, any> = null;
 
   constructor(node: BickerNode<BickerClassComponent<any>>, parentOwner: BickerOwner<BickerComponentType<any>>) {
@@ -20,6 +20,9 @@ export class BickerOwnerClass extends BickerOwner<BickerClassComponent<any>> {
     if (!this._isInitialized) {
       // Инициализация первичным заничением пропсов
       this._component = new this.node.type(this.node.props);
+      this._prevProps = this._component.props;
+      this._prevState = this._component.state;
+
       // Привязка owner к компоненту
       this._component[SYMBOL_COMPONENT_OWNER] = this;
 
@@ -88,5 +91,17 @@ export class BickerOwnerClass extends BickerOwner<BickerClassComponent<any>> {
       isObjectUpdated(this._prevProps, this._component[SYMBOL_COMPONENT_PROPS]) ||
       isObjectUpdated(this._prevState, this._component[SYMBOL_COMPONENT_STATE])
     );
+  }
+
+  public get component() {
+    return this._component;
+  }
+
+  public get prevProps() {
+    return this._prevProps;
+  }
+
+  public get prevState() {
+    return this._prevState;
   }
 }

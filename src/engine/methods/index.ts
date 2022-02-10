@@ -9,7 +9,7 @@ export function createOwnerFromNode(
   node: BickerNode,
   parentOwner: BickerOwner<BickerComponentType<any>>,
 ): BickerOwner<BickerComponentType<any>> {
-  const ownerClass = isExtends(node.type, BickerComponent) ? BickerOwnerClass : BickerOwnerFunction;
+  const ownerClass = isBickerOwnerClass(node.type) ? BickerOwnerClass : BickerOwnerFunction;
   node.owner = new ownerClass(node as any, parentOwner);
   return getOwnerFromNode(node);
 }
@@ -22,4 +22,8 @@ export function updateOwnerNode(prevNode: BickerNode, newNode: BickerNode): Bick
 
 export function getOwnerFromNode(node: BickerNode): BickerOwner<BickerComponentType<any>> {
   return node.owner;
+}
+
+export function isBickerOwnerClass(value: any): value is BickerOwnerClass {
+  return isExtends(value, BickerComponent);
 }

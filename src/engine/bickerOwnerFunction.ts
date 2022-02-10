@@ -80,4 +80,8 @@ export class BickerOwnerFunction extends BickerOwner<BickerFunctionComponent<any
   protected _isNeedToUpdate() {
     return isObjectUpdated(this._prevProps, this._node.props);
   }
+
+  public get prevProps() {
+    return this._prevProps;
+  }
 }
