@@ -13,9 +13,9 @@ export interface BickerClassComponent<Props> {
 }
 
 export class BickerComponent<Props, State> {
-  private [SYMBOL_COMPONENT_PROPS]: Props = null;
-  private [SYMBOL_COMPONENT_STATE]: State = null;
-  private [SYMBOL_COMPONENT_OWNER]: BickerOwnerClass = null;
+  public [SYMBOL_COMPONENT_PROPS]: Props = null;
+  public [SYMBOL_COMPONENT_STATE]: State = null;
+  public [SYMBOL_COMPONENT_OWNER]: BickerOwnerClass = null;
 
   constructor(props: Props) {
     this[SYMBOL_COMPONENT_PROPS] = props;
