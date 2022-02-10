@@ -1,6 +1,6 @@
 {
   "name": "@berish/bicker-js",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "NodeJS module management system with style like React",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
