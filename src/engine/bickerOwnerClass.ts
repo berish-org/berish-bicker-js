@@ -34,6 +34,7 @@ export class BickerOwnerClass extends BickerOwner<BickerClassComponent<any>> {
   protected _renderProcess(): void {
     const _prevProps = this._prevProps;
     const _prevState = this._prevState;
+    const _isInitialized = this._isInitialized;
 
     const newNodes = this._getChildrenNodes();
     const mutations = reconciliation(this._prevNodes, newNodes);
@@ -62,7 +63,7 @@ export class BickerOwnerClass extends BickerOwner<BickerClassComponent<any>> {
       }
     });
 
-    if (this._isInitialized && this._component.componentDidUpdate)
+    if (_isInitialized && this._component.componentDidUpdate)
       this._component.componentDidUpdate(_prevProps, _prevState);
   }
 
